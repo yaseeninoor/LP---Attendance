@@ -5,7 +5,8 @@ This repository now contains the original local attendance page (`index.html`) a
 ## Included in this starter
 - Admin / HR / Supervisor / Employee role structure
 - Employee directory
-- Shared attendance and punch in/out
+- Shared attendance and punch in/out (server-side checks; UAE `Asia/Dubai` work date)
+- Safer attendance permissions: employees punch through a database function rather than directly editing punch timestamps
 - Leave requests and approvals
 - Payroll period records (configure the dates for 20th-to-20th periods)
 - Responsive mobile-first web UI
@@ -18,7 +19,7 @@ This repository now contains the original local attendance page (`index.html`) a
 
 ## Setup steps
 1. Create a project at Supabase.
-2. Open the project's SQL Editor and run the entire file `supabase/schema.sql`.
+2. Open the project's SQL Editor and run the entire file `supabase/schema.sql`. This includes the secure UAE-time attendance punch function. If you already created the database using an older version, run `supabase/hardening.sql` as well.
 3. In Supabase Authentication, create the first administrator user with email and password.
 4. In SQL Editor, create an employee record for that admin, then link the Auth user to that employee and assign the admin role. Replace the placeholders below with real UUIDs and values:
 
@@ -43,6 +44,6 @@ values ('AUTH-USER-UUID', 'EMPLOYEE-UUID', 'HR Administrator', 'admin');
 - Create user accounts through Supabase Authentication; then link each account to an employee row using `public.profiles`.
 - Assign the first admin role manually in SQL Editor. Do not let public users choose their own role.
 - Review row-level security policies with a qualified reviewer before entering real employee or salary data.
-- The HRM starter is a foundation, not yet a fully audited production payroll system. Payroll item creation, salary slip generation, comprehensive approval audit trails, leave balance calculations, and manager-specific permissions need further implementation/testing.
+- The HRM starter is a foundation, not yet a fully audited production payroll system. Payroll item generation and salary slips are not yet implemented. Payroll item creation, salary slip generation, comprehensive approval audit trails, leave balance calculations, and manager-specific permissions need further implementation/testing.
 - The existing `index.html` attendance page continues to use browser local storage and is separate from the new shared HRM starter.
 - Validate overtime and payroll calculations against your company policy and applicable UAE rules before using them for salary payment.
