@@ -2,7 +2,9 @@
 
 This repository includes:
 - `login.html`: responsive login page
-- `worker.js`: Cloudflare Worker API for health checks and starter authentication
+- `dashboard.html`: dashboard for employee directory, attendance, leave requests and read-only payroll records
+- `hrm.html`: routes users to the secure login or dashboard
+- `worker.js`: Cloudflare Worker API for authentication and HRM endpoints
 
 ## 1. Configure the existing Worker
 1. Open Cloudflare Dashboard → Workers & Pages → the existing Worker named `lp---attendance`.
@@ -60,7 +62,7 @@ JSON body:
 The setup endpoint is one-time: it refuses to create another administrator after an admin account exists. Never paste the setup key or real password into GitHub, a public issue, or chat. After setup, sign in at `https://yaseeninoor.github.io/LP---Attendance/login.html`.
 
 ## 4. Important status and limitations
-- Committing `worker.js` to GitHub does not automatically deploy it to Cloudflare unless a deployment workflow is configured.
-- `login.html` connects to the Worker authentication endpoint. The full HRM modules in `hrm.html` still contain the old Supabase-based data logic and are **not yet migrated** to Cloudflare D1.
-- Do not enter real payroll or sensitive employee data until API authorization, role-based data access, rate limiting, audit logging, and production security review are complete.
-- The current login API supports admin setup, sign-in, session lookup, and sign-out. It is a starter authentication layer, not a complete HRM backend.
+- Committing `worker.js` to GitHub does not automatically deploy it to Cloudflare. The Worker must be updated and deployed separately; no deployment workflow has been confirmed.
+- The dashboard now calls employee, attendance, leave and payroll endpoints. Employee creation and leave approval are limited to admin/HR/supervisor roles; payroll is currently read-only.
+- Attendance punch and leave application require the user account to be linked to an employee record (`users.employee_id`). Admin setup creates an admin account without an employee link, so the admin can manage HR data but cannot punch in or submit a leave request until linked to an employee.
+- The dashboard and API are still a starter implementation. Confirm the live Worker is deployed with the latest `worker.js`, verify the actual D1 schema and test each role before entering real payroll or sensitive employee data. Rate limiting, audit logging, account provisioning, password reset, payroll processing and a production security review remain outstanding.
