@@ -42,6 +42,23 @@ th{position:sticky;top:0;z-index:1}
 }
 @media(min-width:651px) and (max-width:900px){.layout{grid-template-columns:175px minmax(0,1fr)}.side{padding:8px}.nav{padding:10px;font-size:13px}}
 
+/* Responsive navigation: desktop sidebar, mobile bottom dock */
+@media(max-width:650px){
+body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+.hero{padding:17px 14px}.hero .wrap{align-items:flex-start}.hero h1{font-size:23px}.hero p{font-size:12px;max-width:250px}
+.layout{display:block;margin:12px auto;padding:0 10px}
+.side{position:fixed;z-index:1000;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));top:auto;display:flex;gap:4px;align-items:stretch;overflow-x:auto;overscroll-behavior-x:contain;padding:8px;background:rgba(255,255,255,.96);border:1px solid #dce6f0;border-radius:18px;box-shadow:0 10px 35px rgba(16,42,67,.2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);scrollbar-width:none}
+.side::-webkit-scrollbar{display:none}.side:before{display:none}
+.nav,.nav.secondary{flex:0 0 72px;width:72px;min-width:72px;min-height:54px;margin:0;padding:7px 4px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;border:1px solid transparent;border-radius:12px;font-size:10px;line-height:1.2;text-align:center;white-space:normal;box-shadow:none}
+.nav.active{background:#e8f3ff;border-color:#cfe6ff;color:#125b9b;box-shadow:none}
+.nav.secondary{border-top:1px solid transparent;padding-top:7px;border-radius:12px}
+.panel{padding:15px;margin-bottom:12px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{min-width:0;padding:14px 12px}.card small{font-size:11px}.num{font-size:25px}
+.row{gap:8px}.row>*{min-width:100%;flex:1 1 100%}.row button{width:100%;min-height:44px}
+input,select,textarea,button{font-size:16px}.tablewrap{max-width:calc(100vw - 52px)}.topline{align-items:flex-start}#userBadge{max-width:145px;overflow-wrap:anywhere}.login{margin:22px 12px;padding:22px}
+}
+@media(min-width:651px){.side{position:sticky;top:16px;align-self:start}.nav{min-height:46px}}
+@media(max-width:380px){.nav,.nav.secondary{flex-basis:65px;min-width:65px;width:65px}.cards{gap:7px}.card{padding:12px 10px}}
+
 </style>
 </head>
 <body>
