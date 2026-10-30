@@ -96,7 +96,7 @@ export default {
     const code=String(b.employee_code||"").trim(), name=String(b.full_name||"").trim();
     if(!code||!name) return json({error:"Employee code and full name are required"},400,headers);
     const r=await env.DB.prepare("INSERT INTO employees (employee_code,full_name,email,department,designation,basic_salary,status) VALUES (?,?,?,?,?,?,?)")
-      .bind(code,name,String(b.email||"").trim()||null,String(b.department||"").trim()||null,String(b.designation||"").trim()||null,Math.max(0,Number(b.basic_salary)||0),"active").run();
+      .bind(code,name,String(b.email||"").trim()||null,String(b.department||"").trim()||null,String(b.designation||"").trim()||null,Math.max(0,Number(b.basic_salary)||0,0),["active","inactive"].includes(String(b.status))?String(b.status):"active").run();
     return json({ok:true,id:r.meta.last_row_id},201,headers);
    }
    if (request.method === "GET" && url.pathname === "/api/attendance") {
@@ -109,7 +109,7 @@ export default {
     if(!authUser.employee_id) return json({error:"Your account is not linked to an employee profile"},400,headers);
     const b=await request.json(),kind=String(b.kind||"");
     if(!["in","out"].includes(kind)) return json({error:"kind must be in or out"},400,headers);
-    const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Dubai",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+    const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Dubai",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());\n    const dateParts=Object.fromEntries(parts.filter(p=>p.type!=="literal").map(p=>[p.type,p.value]));\n    const today=dateParts.year+"-"+dateParts.month+"-"+dateParts.day;
     const now=new Date().toISOString();
     let row=await env.DB.prepare("SELECT id,punch_in,punch_out FROM attendance WHERE employee_id=? AND attendance_date=?").bind(authUser.employee_id,today).first();
     if(kind==="in"){
