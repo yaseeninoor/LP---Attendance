@@ -110,7 +110,8 @@ export default {
     const b=await request.json(),kind=String(b.kind||"");
     if(!["in","out"].includes(kind)) return json({error:"kind must be in or out"},400,headers);
     const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Dubai",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
-    const dateParts=Object.fromEntries(parts.filter(p=>p.type!=="literal").map(p=>[p.type,p.value]));\n    const today=dateParts.year+"-"+dateParts.month+"-"+dateParts.day;
+    const dateParts=Object.fromEntries(parts.filter(p=>p.type!=="literal").map(p=>[p.type,p.value]));
+    const today=dateParts.year+"-"+dateParts.month+"-"+dateParts.day;
     const now=new Date().toISOString();
     let row=await env.DB.prepare("SELECT id,punch_in,punch_out FROM attendance WHERE employee_id=? AND attendance_date=?").bind(authUser.employee_id,today).first();
     if(kind==="in"){
